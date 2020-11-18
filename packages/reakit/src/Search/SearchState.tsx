@@ -3,6 +3,7 @@ import {
   useSealedState,
   SealedInitialState,
 } from "reakit-utils/useSealedState";
+import { PopoverStateReturn, usePopoverState } from "reakit/Popover";
 import {
   unstable_IdState,
   unstable_IdActions,
@@ -34,25 +35,21 @@ export type SearchActions = unstable_IdActions & {
 
 export type SearchInitialState = unstable_IdInitialState;
 
-export type SearchStateReturn = SearchState & SearchActions;
+export type SearchStateReturn = SearchState &
+  SearchActions &
+  PopoverStateReturn;
 
 export function useSearchState(
   initialState: SealedInitialState<SearchInitialState> = {}
 ): SearchStateReturn {
   const { ...sealed } = useSealedState(initialState);
 
-  const [visible, setVisible] = React.useState(false);
+  const popover = usePopoverState(initialState);
 
   const id = unstable_useIdState(sealed);
 
-  const show = React.useCallback(() => setVisible(true), []);
-  const hide = React.useCallback(() => setVisible(false), []);
-
   return {
     ...id,
-    visible,
-    show,
-    hide,
-    setVisible,
+    ...popover,
   };
 }

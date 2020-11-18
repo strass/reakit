@@ -3,6 +3,7 @@ import { createComponent } from "reakit-system/createComponent";
 import { createHook } from "reakit-system/createHook";
 import { shallowEqual } from "reakit-utils/shallowEqual";
 import { useDisclosureContent } from "reakit/Disclosure";
+import { usePopover, usePopoverDisclosure } from "reakit/Popover";
 import { SEARCH_DISCLOSURE_KEYS } from "./__keys";
 
 export type SearchDisclosureOptions = {
@@ -31,7 +32,7 @@ export const useSearchDisclosure = createHook<
   SearchDisclosureHTMLProps
 >({
   name: "SearchDisclosure",
-  compose: useDisclosureContent,
+  compose: [useDisclosureContent, usePopoverDisclosure],
   keys: SEARCH_DISCLOSURE_KEYS,
   propsAreEqual(prev, next) {
     const { unstable_system: prevSystem, ...prevProps } = prev;

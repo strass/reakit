@@ -46,8 +46,6 @@ export const useSearchInput = createHook<
       role,
       type,
       onFocus: (e) => {
-        // For some reason  the useDisclosure props are being lost
-        console.log("focus");
         show();
         htmlProps.onFocus?.(e);
       },
