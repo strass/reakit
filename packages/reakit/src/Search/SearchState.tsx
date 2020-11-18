@@ -16,6 +16,7 @@ export type SearchState = unstable_IdState & {
    * Whether it's visible or not.
    */
   visible: boolean;
+  value: string;
 };
 
 export type SearchActions = unstable_IdActions & {
@@ -31,19 +32,23 @@ export type SearchActions = unstable_IdActions & {
    * Sets `visible`.
    */
   setVisible: React.Dispatch<React.SetStateAction<SearchState["visible"]>>;
+  setValue: React.Dispatch<React.SetStateAction<SearchState["value"]>>;
 };
 
-export type SearchInitialState = unstable_IdInitialState;
+export type SearchInitialState = unstable_IdInitialState &
+  Pick<SearchState, "value">;
 
 export type SearchStateReturn = SearchState &
   SearchActions &
   PopoverStateReturn;
 
 export function useSearchState(
-  initialState: SealedInitialState<SearchInitialState> = {}
+  initialState: SealedInitialState<SearchInitialState> = {
+    value: "",
+  }
 ): SearchStateReturn {
-  const { ...sealed } = useSealedState(initialState);
-
+  const { value: initialValue, ...sealed } = useSealedState(initialState);
+  const [value, setValue] = React.useState(initialValue);
   const popover = usePopoverState(initialState);
 
   const id = unstable_useIdState(sealed);
@@ -51,5 +56,7 @@ export function useSearchState(
   return {
     ...id,
     ...popover,
+    value,
+    setValue,
   };
 }

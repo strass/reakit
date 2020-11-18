@@ -32,7 +32,7 @@ export const useSearchDisclosure = createHook<
   SearchDisclosureHTMLProps
 >({
   name: "SearchDisclosure",
-  compose: [useDisclosureContent, usePopoverDisclosure],
+  compose: [useDisclosureContent],
   keys: SEARCH_DISCLOSURE_KEYS,
   propsAreEqual(prev, next) {
     const { unstable_system: prevSystem, ...prevProps } = prev;

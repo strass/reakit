@@ -12,15 +12,18 @@ export type SearchInputOptions = {
    * @private
    */
   unstable_system?: any;
+  value: string;
+  setValue: (newValue: string) => void;
 } & DisclosureStateReturn;
 
-export type SearchInputHTMLProps = React.HTMLAttributes<HTMLInputElement> &
+export type SearchInputHTMLProps = React.HTMLAttributes<any> &
   React.RefAttributes<any> & {
     /**
      * Function returned by the hook to wrap the element to which html props
      * will be passed.
      */
     wrapElement?: (element: React.ReactNode) => React.ReactNode;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   };
 
 export type SearchInputProps = SearchInputOptions & SearchInputHTMLProps;
@@ -30,7 +33,7 @@ export const useSearchInput = createHook<
   SearchInputHTMLProps
 >({
   name: "SearchInput",
-  compose: [useInput, useDisclosure],
+  compose: useDisclosure,
   keys: SEARCH_INPUT_KEYS,
   propsAreEqual(prev, next) {
     const { unstable_system: prevSystem, ...prevProps } = prev;
@@ -40,18 +43,19 @@ export const useSearchInput = createHook<
     }
     return shallowEqual(prevProps, nextProps);
   },
-  useProps({ show, hide }, { type = "text", role = "input", ...htmlProps }) {
+  useProps(
+    options,
+    { onChange: htmlOnChange, type = "text", role = "input", ...htmlProps }
+  ) {
+    console.log(options);
     return {
       ...htmlProps,
       role,
       type,
-      onFocus: (e) => {
-        show();
-        htmlProps.onFocus?.(e);
-      },
-      onBlur: (e) => {
-        hide();
-        htmlProps.onBlur?.(e);
+      value: options.value,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
+        options.setValue(e.target.value);
+        htmlOnChange(e);
       },
     };
   },
