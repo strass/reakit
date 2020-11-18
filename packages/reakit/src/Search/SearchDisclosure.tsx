@@ -11,6 +11,7 @@ export type SearchDisclosureOptions = {
    * @private
    */
   unstable_system?: any;
+  visible: boolean;
 };
 
 export type SearchDisclosureHTMLProps = React.HTMLAttributes<any> &

@@ -2,7 +2,7 @@ import * as React from "react";
 import { createComponent } from "reakit-system/createComponent";
 import { createHook } from "reakit-system/createHook";
 import { shallowEqual } from "reakit-utils/shallowEqual";
-import { useDisclosure } from "reakit/Disclosure";
+import { DisclosureStateReturn, useDisclosure } from "reakit/Disclosure";
 import { useInput } from "reakit/Input";
 import { SEARCH_INPUT_KEYS } from "./__keys";
 
@@ -12,7 +12,7 @@ export type SearchInputOptions = {
    * @private
    */
   unstable_system?: any;
-};
+} & DisclosureStateReturn;
 
 export type SearchInputHTMLProps = React.HTMLAttributes<HTMLInputElement> &
   React.RefAttributes<any> & {
@@ -40,8 +40,21 @@ export const useSearchInput = createHook<
     }
     return shallowEqual(prevProps, nextProps);
   },
-  useProps(_, { type = "text", role = "input", ...htmlProps }) {
-    return { ...htmlProps, role, type };
+  useProps({ show, hide }, { type = "text", role = "input", ...htmlProps }) {
+    return {
+      ...htmlProps,
+      role,
+      type,
+      onFocus: (e) => {
+        console.log("focus");
+        show();
+        htmlProps.onFocus?.(e);
+      },
+      onBlur: (e) => {
+        hide();
+        htmlProps.onBlur?.(e);
+      },
+    };
   },
 });
 
