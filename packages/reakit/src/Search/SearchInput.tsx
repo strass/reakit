@@ -3,7 +3,6 @@ import { createComponent } from "reakit-system/createComponent";
 import { createHook } from "reakit-system/createHook";
 import { shallowEqual } from "reakit-utils/shallowEqual";
 import { DisclosureStateReturn, useDisclosure } from "reakit/Disclosure";
-import { useInput } from "reakit/Input";
 import { SEARCH_INPUT_KEYS } from "./__keys";
 
 export type SearchInputOptions = {
