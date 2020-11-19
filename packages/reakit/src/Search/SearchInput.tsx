@@ -33,7 +33,7 @@ export const useSearchInput = createHook<
   SearchInputHTMLProps
 >({
   name: "SearchInput",
-  compose: useDisclosure,
+  compose: [useDisclosure],
   keys: SEARCH_INPUT_KEYS,
   propsAreEqual(prev, next) {
     const { unstable_system: prevSystem, ...prevProps } = prev;
@@ -55,7 +55,7 @@ export const useSearchInput = createHook<
       value: options.value,
       onChange: (e: React.ChangeEvent<HTMLInputElement>) => {
         options.setValue(e.target.value);
-        htmlOnChange(e);
+        htmlOnChange?.(e);
       },
     };
   },

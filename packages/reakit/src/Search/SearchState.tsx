@@ -3,6 +3,7 @@ import {
   useSealedState,
   SealedInitialState,
 } from "reakit-utils/useSealedState";
+import { MenuStateReturn, useMenuState } from "reakit/Menu";
 import { PopoverStateReturn, usePopoverState } from "reakit/Popover";
 import {
   unstable_IdState,
@@ -38,9 +39,7 @@ export type SearchActions = unstable_IdActions & {
 export type SearchInitialState = unstable_IdInitialState &
   Pick<SearchState, "value">;
 
-export type SearchStateReturn = SearchState &
-  SearchActions &
-  PopoverStateReturn;
+export type SearchStateReturn = SearchState & SearchActions & MenuStateReturn;
 
 export function useSearchState(
   initialState: SealedInitialState<SearchInitialState> = {
@@ -49,13 +48,15 @@ export function useSearchState(
 ): SearchStateReturn {
   const { value: initialValue, ...sealed } = useSealedState(initialState);
   const [value, setValue] = React.useState(initialValue);
-  const popover = usePopoverState(initialState);
+  // const popover = usePopoverState(initialState);
+  const menu = useMenuState(initialState);
 
   const id = unstable_useIdState(sealed);
 
   return {
     ...id,
-    ...popover,
+    // ...popover,
+    ...menu,
     value,
     setValue,
   };
