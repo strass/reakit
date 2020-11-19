@@ -17,7 +17,9 @@ export default function SearchTest() {
       </Group>
       <Menu {...search}>
         {[...search.value].map((l, i) => (
-          <MenuItem key={i}>{l}</MenuItem>
+          <MenuItem {...search} key={i}>
+            {l}
+          </MenuItem>
         ))}
       </Menu>
     </>
